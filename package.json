@@ -1,0 +1,26 @@
+{
+  "name": "cmrcreator",
+  "version": "1.0.0",
+  "description": "Create CMR/waybills",
+  "main": "main.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shawriter/CMRcreator.git"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "Shawriter",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Shawriter/CMRcreator/issues"
+  },
+  "homepage": "https://github.com/Shawriter/CMRcreator#readme",
+  "devDependencies": {
+    "electron": "^30.0.1"
+  }
+}
