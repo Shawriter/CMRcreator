@@ -22,5 +22,8 @@
   "homepage": "https://github.com/Shawriter/CMRcreator#readme",
   "devDependencies": {
     "electron": "^30.0.1"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7"
   }
 }

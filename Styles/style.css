@@ -19,8 +19,14 @@ body{
     background-image: url(imgs/bruno-van-der-kraan-vm5gksHUQJw-unsplash.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    width: 1500px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
+    
 .h1_index {
         
         display: flex;
@@ -34,14 +40,10 @@ body{
        
     }
 .index_div{
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    margin-top: 0px;
-    padding:0;
     position: relative;
-    top: 530px;
-    left: 1000px;
+    display: flex;
+    flex-direction: row;
+    padding: 0;
     color: #000000;
     background-color: gainsboro;
     height: 300px;
@@ -49,7 +51,7 @@ body{
     z-index: 10;
     border: solid 2px #e740f0;
     border-radius: 10px;
-    box-shadow: 0 0 10px #000000 ;
+    box-shadow: 0 0 10px #000000;
 }
 .cancelbtn{
     height: 30px;
