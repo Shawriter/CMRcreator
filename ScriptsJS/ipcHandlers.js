@@ -1,8 +1,11 @@
 const { ipcMain } = require('electron');
 const fs = require('fs');
 const { PDFDocument } = require('pdf-lib');
+const db = require('./db');
+const dbOps = require('./dbOps');
 
 function setupIPCHandlers() {
+
   ipcMain.handle('modify-pdf', async (event, { inputPath, outputPath, text }) => {
     try {
       const pdfBytes = fs.readFileSync(inputPath); 
@@ -25,6 +28,36 @@ function setupIPCHandlers() {
       throw new Error('Failed to modify PDF');
     }
   });
+
+  ipcMain.handle('add-customer', async (event, customer) => {
+    return new Promise((resolve, reject) => {
+      const { name, address, city, zipcode, country, reference, phone_number, email } = customer;
+      db.run(
+        `INSERT INTO Customers (name, address, city, zipcode, country, reference, phone_number, email) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [name, address, city, zipcode, country, reference, phone_number, email],
+        function (err) {
+          if (err) {
+            console.error('Error inserting customer:', err);
+            reject(err);
+          } else {
+            resolve({ id: this.lastID });
+          }
+        }
+      );
+    });
+  });
+
+  ipcMain.handle('get-names-addresses', async () => {
+    return new Promise((resolve, reject) => {
+      db.all("SELECT * FROM Customers", (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      });
+    });
+  });
+  
+
 }
 
 module.exports = { setupIPCHandlers };

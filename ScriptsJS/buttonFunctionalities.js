@@ -72,6 +72,7 @@ function formChange(addresses, i, myConstructorClosure, formChangeCounter, formO
                             addresses.length = 0;
                             //console.log(sender.fname);
                             break;
+                            
                         case "form2":
                             
                             let receiver = myConstructorClosure.Receiverproto(...addresses);
@@ -81,18 +82,23 @@ function formChange(addresses, i, myConstructorClosure, formChangeCounter, formO
                             addresses.length = 0;
                             //console.log(receiver.fname);
                             break;
+
                         case "form3":
+
                             let collection = myConstructorClosure.CollectionAddressproto(...addresses);
                             formObjects.push(collection);
                             console.log(formObjects[2]);
                             //addressObjects.length = 0;
                             break;
+
                         case "form4":
+
                             let ReceiverIfNotTheSame = myConstructorClosure.ReceiverIfNotTheSameproto(...addresses);
                             formObjects.push(ReceiverIfNotTheSame);
                             console.log(formObjects[3]);
                             //addressObjects.length = 0;
                             break;
+
                         default:
                             console.log("No form found");
                 }

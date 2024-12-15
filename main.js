@@ -1,6 +1,7 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { setupIPCHandlers } = require('./ScriptsJS/ipcHandlers'); 
+
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -17,7 +18,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  setupIPCHandlers();
+  setupIPCHandlers(ipcMain);
   createWindow();
 });
 
@@ -27,4 +28,9 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
+});
+
+
+app.on('before-quit', () => {
+  db.close();
 });
