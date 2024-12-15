@@ -1,7 +1,7 @@
 const { ipcMain } = require('electron');
 const fs = require('fs');
 const { PDFDocument } = require('pdf-lib');
-const db = require('./db');
+const db = require('./dbconn');
 const dbOps = require('./dbOps');
 
 function setupIPCHandlers() {

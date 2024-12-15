@@ -1,14 +1,19 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, screen } = require('electron');
 const path = require('path');
 const { setupIPCHandlers } = require('./ScriptsJS/ipcHandlers'); 
-
+const db = require('./ScriptsJS/dbconn');
 
 function createWindow() {
+  // Get screen dimensions dynamically
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
   const win = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: width,       
+    height: height,     
+    fullscreenable: true, 
+    frame: true,        
     webPreferences: {
-      nodeIntegration: false,  // nodeIntegration disabled for security
+      nodeIntegration: false,  
       contextIsolation: true,  
       preload: path.join(__dirname, 'preload.js'), 
     },
@@ -18,8 +23,8 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  setupIPCHandlers(ipcMain);
-  createWindow();
+  setupIPCHandlers(ipcMain); // Initialize IPC handlers
+  createWindow(); // Create the main window
 });
 
 app.on('window-all-closed', () => {
@@ -30,7 +35,6 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
-
 app.on('before-quit', () => {
-  db.close();
+  db.close(); // Ensure the database connection is closed
 });
