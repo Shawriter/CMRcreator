@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, screen } = require('electron');
 const path = require('path');
-const { setupIPCHandlers } = require('./ScriptsJS/ipcHandlers'); 
-const db = require('./ScriptsJS/dbconn');
+const { setupIPCHandlers } = require('./ipcHandlers'); 
+const db = require('./renderer/ScriptsJS/dbconn');
 
 function createWindow() {
   // Get screen dimensions dynamically
@@ -19,7 +19,7 @@ function createWindow() {
     },
   });
 
-  win.loadFile('index.html');
+  win.loadFile(path.join(__dirname, 'renderer/pages/index.html'));
 }
 
 app.whenReady().then(() => {

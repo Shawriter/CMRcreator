@@ -2,7 +2,7 @@
   "name": "cmrcreator",
   "version": "1.0.0",
   "description": "Create CMR/waybills",
-  "main": "main.js",
+  "main": "src/main/main.js",
   "scripts": {
     "test": "test",
     "start": "electron ."
