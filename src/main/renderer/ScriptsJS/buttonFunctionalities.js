@@ -119,17 +119,62 @@ function clearForm() {
 //Duplicate cllcontainer div package element
 function appendPackageNode() {
     
-    var appended = document.querySelector(".cllcontainer");
-    var divslength = document.querySelectorAll(".cllcontainer").length;
-    //console.log(divslength);
-    appended.id = "appended" + divslength;
-    document.body.appendChild(appended.cloneNode(true));
+    if (typeof pkgnmbr == "undefined") {
+        var pkgnmbr = 1;
+    }
+
     
-  }
+    var originalContainer = document.querySelector(".cllcontainer");
+
+    
+    var clonedContainer = originalContainer.cloneNode(true);
+
+    
+    var originalInputs = originalContainer.querySelectorAll("input");
+    var clonedInputs = clonedContainer.querySelectorAll("input");
+
+    for (let i = 0; i < originalInputs.length; i++) {
+        clonedInputs[i].value = originalInputs[i].value;
+        if (originalInputs[i].checked) {
+            clonedInputs[i].checked = true;
+        }
+    }
+
+    
+    var originalSelects = originalContainer.querySelectorAll("select");
+    var clonedSelects = clonedContainer.querySelectorAll("select");
+
+    for (let i = 0; i < originalSelects.length; i++) {
+        clonedSelects[i].value = originalSelects[i].value;
+    }
+
+    
+    var divslength = document.querySelectorAll(".cllcontainer").length;
+    clonedContainer.id = "appended" + divslength;
+
+    
+    document.body.appendChild(clonedContainer);
+
+    
+    updatePackageNumbers();
+}
 
 //Remove cllcontainer div package element
 function removePackageNode(event) {
+    
+    var containerToRemove = event.target.closest(".cllcontainer");
+    if (containerToRemove) {
+        containerToRemove.remove();
+    } 
+    updatePackageNumbers();
+}
 
-    event.target.parentNode.parentNode.parentNode.remove();
+function updatePackageNumbers() {
 
-   }
+    var allContainers = document.querySelectorAll(".cllcontainer");
+    var totalPackages = allContainers.length;
+
+    allContainers.forEach((container, index) => {
+        container.querySelector("#pkgnumber").innerText = `${index + 1}/${totalPackages}`;
+    });
+}
