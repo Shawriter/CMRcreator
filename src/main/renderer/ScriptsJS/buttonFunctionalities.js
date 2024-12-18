@@ -118,17 +118,15 @@ function clearForm() {
 }
 //Duplicate cllcontainer div package element
 function appendPackageNode(event) {
-    // Initialize pkgnmbr if undefined
+    
     if (typeof pkgnmbr == "undefined") {
         var pkgnmbr = 1;
     }
 
-    // Select the container to be cloned
+    
     var originalContainer = event.target.closest(".cllcontainer");
     
-    //var originalContainer = event.target; // Get the clicked element
-    //alert(`You clicked: ${originalContainer.innerText}`);
-    // Clone the container
+    
     var clonedContainer = originalContainer.cloneNode(true);
 
     // Copy input values
@@ -136,41 +134,41 @@ function appendPackageNode(event) {
     var clonedInputs = clonedContainer.querySelectorAll("input");
 
     for (let i = 0; i < originalInputs.length; i++) {
-        clonedInputs[i].value = originalInputs[i].value; // Copy text and values
-        clonedInputs[i].checked = originalInputs[i].checked; // Copy checked state
+        clonedInputs[i].value = originalInputs[i].value; 
+        clonedInputs[i].checked = originalInputs[i].checked; 
     }
 
-    // Copy dropdown values
+    
     var originalSelects = originalContainer.querySelectorAll("select");
     var clonedSelects = clonedContainer.querySelectorAll("select");
 
     for (let i = 0; i < originalSelects.length; i++) {
-        clonedSelects[i].value = originalSelects[i].value; // Copy dropdown selections
+        clonedSelects[i].value = originalSelects[i].value; 
     }
 
-    // Clear the unique ID from the cloned container and assign a new ID
+    
     var divslength = document.querySelectorAll(".cllcontainer").length;
     clonedContainer.id = "appended" + divslength;
 
-    // Append the cloned container to the DOM
+    
     document.body.appendChild(clonedContainer);
 
-    // Update package numbers for all containers
+    
     updatePackageNumbers();
 }
 
 // Remove cllcontainer div package element
 function removePackageNode(event) {
-    // Find the closest container with the class 'cllcontainer' and remove it
+    
     var containerToRemove = event.target.closest(".cllcontainer");
     if (containerToRemove) {
         containerToRemove.remove();
     }
-    // Update package numbers dynamically
+   
     updatePackageNumbers();
 }
 
-// Update package numbers dynamically
+
 function updatePackageNumbers() {
     var allContainers = document.querySelectorAll(".cllcontainer");
     var totalPackages = allContainers.length;
