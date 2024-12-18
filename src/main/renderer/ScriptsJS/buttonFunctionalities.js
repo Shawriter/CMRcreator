@@ -117,64 +117,69 @@ function clearForm() {
     }
 }
 //Duplicate cllcontainer div package element
-function appendPackageNode() {
-    
+function appendPackageNode(event) {
+    // Initialize pkgnmbr if undefined
     if (typeof pkgnmbr == "undefined") {
         var pkgnmbr = 1;
     }
 
+    // Select the container to be cloned
+    var originalContainer = event.target.closest(".cllcontainer");
     
-    var originalContainer = document.querySelector(".cllcontainer");
-
-    
+    //var originalContainer = event.target; // Get the clicked element
+    //alert(`You clicked: ${originalContainer.innerText}`);
+    // Clone the container
     var clonedContainer = originalContainer.cloneNode(true);
 
-    
+    // Copy input values
     var originalInputs = originalContainer.querySelectorAll("input");
     var clonedInputs = clonedContainer.querySelectorAll("input");
 
     for (let i = 0; i < originalInputs.length; i++) {
-        clonedInputs[i].value = originalInputs[i].value;
-        if (originalInputs[i].checked) {
-            clonedInputs[i].checked = true;
-        }
+        clonedInputs[i].value = originalInputs[i].value; // Copy text and values
+        clonedInputs[i].checked = originalInputs[i].checked; // Copy checked state
     }
 
-    
+    // Copy dropdown values
     var originalSelects = originalContainer.querySelectorAll("select");
     var clonedSelects = clonedContainer.querySelectorAll("select");
 
     for (let i = 0; i < originalSelects.length; i++) {
-        clonedSelects[i].value = originalSelects[i].value;
+        clonedSelects[i].value = originalSelects[i].value; // Copy dropdown selections
     }
 
-    
+    // Clear the unique ID from the cloned container and assign a new ID
     var divslength = document.querySelectorAll(".cllcontainer").length;
     clonedContainer.id = "appended" + divslength;
 
-    
+    // Append the cloned container to the DOM
     document.body.appendChild(clonedContainer);
 
-    
+    // Update package numbers for all containers
     updatePackageNumbers();
 }
 
-//Remove cllcontainer div package element
+// Remove cllcontainer div package element
 function removePackageNode(event) {
-    
+    // Find the closest container with the class 'cllcontainer' and remove it
     var containerToRemove = event.target.closest(".cllcontainer");
     if (containerToRemove) {
         containerToRemove.remove();
-    } 
+    }
+    // Update package numbers dynamically
     updatePackageNumbers();
 }
 
+// Update package numbers dynamically
 function updatePackageNumbers() {
-
     var allContainers = document.querySelectorAll(".cllcontainer");
     var totalPackages = allContainers.length;
 
+    // Recalculate the package numbers for all containers
     allContainers.forEach((container, index) => {
-        container.querySelector("#pkgnumber").innerText = `${index + 1}/${totalPackages}`;
+        var packageNumberElement = container.querySelector("#pkgnumber");
+        if (packageNumberElement) {
+            packageNumberElement.innerText = `${index + 1}/${totalPackages}`;
+        }
     });
 }
