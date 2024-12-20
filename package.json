@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Shawriter/CMRcreator#readme",
   "devDependencies": {
-    "electron": "^30.0.1"
+    "electron": "^33.2.1"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",

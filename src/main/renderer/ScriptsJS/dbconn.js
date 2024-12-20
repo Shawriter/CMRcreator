@@ -12,7 +12,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// Ensure the Customers table exists
+
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS Customers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,5 +28,5 @@ db.serialize(() => {
   console.log('Customers table ensured');
 });
 
-// Export the database instance
+
 module.exports = db;

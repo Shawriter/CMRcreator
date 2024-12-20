@@ -13,8 +13,8 @@
 
     <script defer type="text/javascript" src="../ScriptsJS/buttonFunctionalities.js"></script>
     <script defer type="text/javascript" src="../ScriptsJS/constructors.js"></script>
-    <script defer type="text/javascript" src="../ScriptsJS/dataPDF.js"></script>
-    <script defer type="text/javascript" src="../ScriptsJS/server.js"></script>
+   
+    
     <script defer type="text/javascript" src="../ScriptsJS/objectsToPDF.js"></script>
 
     <title>CMRmaker</title>
@@ -159,7 +159,7 @@
     <label id="packages_label">Packages</label>
     <label id="dimensions_LABEL">Dimensions</label>
 </div>
-<div class="cllcontainer">
+<div class="cllcontainer" id="firstcontainer">
     
 <div class="cll_innercontainer">
     <label class="labels" id="qty" value="qty">Qty</label>
@@ -256,8 +256,8 @@
 
 </body>
 
-    <button class="buttons" type="button" onclick="modifyPDF()">Clear</button>
-    <button class="buttons" onclick="getFormAddresses()">Submit</button>
+    <button class="buttons" type="button">Clear</button>
+    <button class="buttons" id="submitbutton">Submit</button>
 
 <footer>
     <div class="footer">

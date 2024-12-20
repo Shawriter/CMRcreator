@@ -161,8 +161,15 @@ function appendPackageNode(event) {
 function removePackageNode(event) {
     
     var containerToRemove = event.target.closest(".cllcontainer");
-    if (containerToRemove) {
+    if (containerToRemove && document.querySelectorAll(".cllcontainer").length > 1) {
+        
         containerToRemove.remove();
+
+    }
+    else {
+
+        alert("You can't remove the last package");
+
     }
    
     updatePackageNumbers();
@@ -170,6 +177,7 @@ function removePackageNode(event) {
 
 
 function updatePackageNumbers() {
+    
     var allContainers = document.querySelectorAll(".cllcontainer");
     var totalPackages = allContainers.length;
 

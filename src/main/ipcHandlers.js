@@ -4,29 +4,37 @@ const { PDFDocument } = require('pdf-lib');
 const db = require('./renderer/ScriptsJS/dbconn');
 const dbOps = require('./renderer/ScriptsJS/dbOps');
 
+
+
 function setupIPCHandlers() {
 
   ipcMain.handle('modify-pdf', async (event, { inputPath, outputPath, text }) => {
     try {
-      const pdfBytes = fs.readFileSync(inputPath); 
-      const pdfDoc = await PDFDocument.load(pdfBytes);
+      try {
+        const pdfBytes = fs.readFileSync(inputPath);
+        const pdfDoc = await PDFDocument.load(pdfBytes);
+        const page = pdfDoc.getPages()[0];
+        const data = JSON.parse(text);
+  
+        
+        const address = data.addresses[0];
+        page.drawText(`Name: ${address.fname}`, { x: 50, y: 700, size: 12 });
+        page.drawText(`Address: ${address.address}`, { x: 50, y: 680, size: 12 });
+        page.drawText(`Zipcode: ${address.zip}`, { x: 50, y: 660, size: 12 });
+        page.drawText(`Country: ${address.country}`, { x: 50, y: 640, size: 12 });
+        page.drawText(`Reference: ${address.reference}`, { x: 50, y: 620, size: 12 });
+        page.drawText(`Phone Number: ${address.phone}`, { x: 50, y: 600, size: 12 });
+        page.drawText(`Email: ${address.email}`, { x: 50, y: 580, size: 12 });
+  
+        const modifiedPdfBytes = await pdfDoc.save();
+        fs.writeFileSync(outputPath, modifiedPdfBytes);
+  
+        return { success: true };
+      } catch (error) {
+        console.error('Error modifying PDF:', error);
+        return { success: false, error: error.message };
+      }
 
-     
-      const page = pdfDoc.getPages()[0];
-      page.drawText(text, {
-        x: 50,
-        y: 500,
-        size: 30,
-      });
-
-      const modifiedPdfBytes = await pdfDoc.save(); 
-      fs.writeFileSync(outputPath, modifiedPdfBytes); 
-
-      return 'PDF modified successfully';
-    } catch (error) {
-      console.error('Error modifying PDF:', error);
-      throw new Error('Failed to modify PDF');
-    }
   });
 
   ipcMain.handle('add-customer', async (event, customer) => {

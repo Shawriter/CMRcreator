@@ -6,7 +6,8 @@ const db = require('./renderer/ScriptsJS/dbconn');
 function createWindow() {
   // Get screen dimensions dynamically
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
+  const preloadPath = path.join(__dirname, 'preload.js');
+  console.log('Preload path:', preloadPath);
   const win = new BrowserWindow({
     width: width,       
     height: height,     
@@ -15,16 +16,18 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,  
       contextIsolation: true,  
-      preload: path.join(__dirname, 'preload.js'), 
+      preload: preloadPath, 
+      enableRemoteModule: false, // Keep secure
     },
   });
-
+  
   win.loadFile(path.join(__dirname, 'renderer/pages/index.html'));
 }
 
 app.whenReady().then(() => {
-  setupIPCHandlers(ipcMain); // Initialize IPC handlers
-  createWindow(); // Create the main window
+
+  createWindow(); 
+  setupIPCHandlers()
 });
 
 app.on('window-all-closed', () => {
@@ -38,3 +41,4 @@ app.on('activate', () => {
 app.on('before-quit', () => {
   db.close(); // Ensure the database connection is closed
 });
+

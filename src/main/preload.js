@@ -1,10 +1,12 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const fs = require('fs')
-const path = require('path');
+// DO NOT REQUIRE anything else here than the electron module
+
+console.log('Preload script loaded'); 
 
 contextBridge.exposeInMainWorld('electron', {
-  modifyPDF: (args) => ipcRenderer.invoke('modify-pdf', args), 
+  modifyPDF: (data) => ipcRenderer.invoke('modify-pdf', data ), 
   readFile: (path) => fs.readFileSync(path, 'utf8'),
   writeFile: (path, data) => fs.writeFileSync(path, data),
-  getNamesAddresses: () => ipcRenderer.invoke('get-names-addresses'),
+  getNamesAddresses: () => ipcRenderer.invoke('get-names-addresses')
 });
+
