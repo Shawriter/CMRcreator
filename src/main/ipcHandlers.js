@@ -3,13 +3,17 @@ const fs = require('fs');
 const { PDFDocument } = require('pdf-lib');
 const db = require('./renderer/ScriptsJS/dbconn');
 const dbOps = require('./renderer/ScriptsJS/dbOps');
-
+const PDFDataModel = require('./renderer/ScriptsJS/model');
 
 
 function setupIPCHandlers() {
+ 
+  ipcMain.handle('get-pdf-data-model', () => {
+    return PDFDataModel;
+  });
 
   ipcMain.handle('modify-pdf', async (event, { inputPath, outputPath, text }) => {
-    try {
+    
       try {
         const pdfBytes = fs.readFileSync(inputPath);
         const pdfDoc = await PDFDocument.load(pdfBytes);
@@ -65,7 +69,7 @@ function setupIPCHandlers() {
     });
   });
   
-
+ 
 }
 
 module.exports = { setupIPCHandlers };

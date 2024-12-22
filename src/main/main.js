@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain, screen } = require('electron');
 const path = require('path');
 const { setupIPCHandlers } = require('./ipcHandlers'); 
 const db = require('./renderer/ScriptsJS/dbconn');
+//const PDFDataModel = require('./renderer/ScriptsJS/model');
+//const objs = require('./renderer/ScriptsJS/objectsToPDF.js');
 
 function createWindow() {
   // Get screen dimensions dynamically

@@ -1,8 +1,14 @@
 const { AddressesConstructor, PackageConstructor, ShipmentConstructor } = require('./constructors');
 
 class PDFDataModel {
-  constructor() {
+  constructor(data = {}) {
     this.shipment = new ShipmentConstructor();
+    if (data.addresses) {
+        data.addresses.forEach(address => this.setAddress(address));
+      }
+      if (data.packages) {
+        data.packages.forEach(pkg => this.setPackage(pkg));
+      }
   }
 
   setAddress(data) {
@@ -19,13 +25,13 @@ class PDFDataModel {
   }
 
   setPackage(data) {
-    const package = new PackageConstructor(
+    const pkg = new PackageConstructor(
       data.weight,
       data.length,
       data.width,
       data.height
     );
-    this.shipment.packages.push(package);
+    this.shipment.packages.push(pkg);
   }
 
   getShipment() {
