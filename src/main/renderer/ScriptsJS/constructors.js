@@ -1,75 +1,62 @@
-
-function addressConstructorClosure() {
-
-    let formObjects = [];
-    
-    function AddressesConstructor(fname, address, zip, country, reference, phone, email) {
-
-        this.fname = fname;
-        this.address = address;
-        this.zip = zip;
-        this.country = country;
-        this.reference = reference;
-        this.phone = phone;
-        this.email = email;
-        
+class AddressesConstructor {
+    constructor(fname, address, zip, country, reference, phone, email) {
+      this.fname = fname;
+      this.address = address;
+      this.zip = zip;
+      this.country = country;
+      this.reference = reference;
+      this.phone = phone;
+      this.email = email;
     }
-
-    function PackageConstructor(weight, length, width, height) {
-
-        this.weight = weight;
-        this.length = length;
-        this.width = width;
-        this.height = height;
-        return this;
-        
+  }
+  
+  class PackageConstructor {
+    constructor(weight, length, width, height) {
+      this.weight = weight;
+      this.length = length;
+      this.width = width;
+      this.height = height;
     }
-
-    function ShipmentConstructor() {
-
-        this.addresses = [];
-        this.packages = [];
-        
-        
+  }
+  
+  class ShipmentConstructor {
+    constructor() {
+      this.addresses = [];
+      this.packages = [];
     }
-    
-    function Senderproto(...args) {
-
-        AddressesConstructor.apply(this, args);
-        
-        
-        
+  }
+  
+  class Constructors {
+    constructor() {
+      this.formObjects = [];
     }
-   
-    function Receiverproto(...args) { 
-        
-        AddressesConstructor.apply(this, args);
-        
-        
-            
+  
+    AddressesConstructor = AddressesConstructor;
+    PackageConstructor = PackageConstructor;
+    ShipmentConstructor = ShipmentConstructor;
+  
+    Senderproto(...args) {
+      return new AddressesConstructor(...args);
     }
-    function CollectionAddressproto(...args) { 
-
-        AddressesConstructor.apply(this, args);
-        
-
+  
+    Receiverproto(...args) {
+      return new AddressesConstructor(...args);
     }
-
-    
-    function ReceiverIfNotTheSameproto(...args) { 
-
-        AddressesConstructor.apply(this, args);
-        
-        
+  
+    CollectionAddressproto(...args) {
+      return new AddressesConstructor(...args);
     }
- 
+  
+    ReceiverIfNotTheSameproto(...args) {
+      return new AddressesConstructor(...args);
+    }
+  }
 
-    return {AddressesConstructor, PackageConstructor, ShipmentConstructor, Senderproto, Receiverproto, CollectionAddressproto, ReceiverIfNotTheSameproto};
-}
+module.exports = {AddressesConstructor, PackageConstructor, ShipmentConstructor };
 
-function userConstructorClosure() {
+//function userConstructorClosure() {
 
-    function UserConstructor(uname, password, uemail) {
+    /*function UserConstructor(uname, password, uemail) {
 
         this.uname = uname;
         this.password = password;
@@ -78,5 +65,4 @@ function userConstructorClosure() {
     }
 
   
-    return {UserConstructor};
-}
+    //return {UserConstructor};*/

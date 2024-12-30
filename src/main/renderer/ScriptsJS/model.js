@@ -1,17 +1,22 @@
-const { AddressesConstructor, PackageConstructor, ShipmentConstructor } = require('./constructors');
+const { ShipmentConstructor, AddressesConstructor, PackageConstructor } = require('./constructors');
 
 class PDFDataModel {
   constructor(data = {}) {
     this.shipment = new ShipmentConstructor();
+    
     if (data.addresses) {
-        data.addresses.forEach(address => this.setAddress(address));
-      }
-      if (data.packages) {
-        data.packages.forEach(pkg => this.setPackage(pkg));
-      }
+      data.addresses.forEach(address => this.setAddress(address));
+    }
+    if (data.packages) {
+      data.packages.forEach(pkg => this.setPackage(pkg));
+    }
   }
 
   setAddress(data) {
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid address data');
+    }
+
     const address = new AddressesConstructor(
       data.fname,
       data.address,
@@ -25,11 +30,15 @@ class PDFDataModel {
   }
 
   setPackage(data) {
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid package data');
+    }
+
     const pkg = new PackageConstructor(
-      data.weight,
+      /*data.weight,
       data.length,
       data.width,
-      data.height
+      data.height*/
     );
     this.shipment.packages.push(pkg);
   }
@@ -37,6 +46,19 @@ class PDFDataModel {
   getShipment() {
     return this.shipment;
   }
+
+  /*toJSON() {
+    return {
+      shipment: this.shipment,
+    };
+  }
+
+  static fromJSON(json) {
+    if (!json || typeof json !== 'object') {
+      throw new Error('Invalid JSON for PDFDataModel');
+    }
+    return new PDFDataModel(json);
+  }*/
 }
 
 module.exports = PDFDataModel;

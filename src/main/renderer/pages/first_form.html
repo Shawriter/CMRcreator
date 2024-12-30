@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../Styles/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,12 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap" rel="stylesheet">
     
     <link rel="icon" type="image/x-icon" href="Styles/imgs/cmrlogo.ico">
-
-    <script defer type="text/javascript" src="../ScriptsJS/buttonFunctionalities.js"></script>
-    <script defer type="text/javascript" src="../ScriptsJS/constructors.js"></script>
-   
-    
-    <script defer type="text/javascript" src="../ScriptsJS/objectsToPDF.js"></script>
+    <script defer type="text/javascript" src="../ScriptsJS/renderer.js"></script>
 
     <title>CMRmaker</title>
 </head>
@@ -231,10 +227,10 @@
 
             <input class="input_boxes_cll" id="dimensions_5" size="60">
 
-            <i class="fa fa-minus" id="minus_icon" onclick="removePackageNode(event)"></i>
+            <i class="fa fa-minus" id="minus_icon"></i>
             <p id="remove_package" >Remove package</p>
 
-            <i class="fa fa-plus" id="plus_icon" onclick="appendPackageNode(event)"></i>
+            <i class="fa fa-plus" id="plus_icon"></i>
             <p id="duplicate_package">Duplicate package/add more</p>
 
             <h4 id="pkgnumber"></h4>

@@ -1,7 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+
 // DO NOT REQUIRE anything else here than the electron module
-console.log('Preload script loaded'); 
+
 
 contextBridge.exposeInMainWorld('electron', {
   modifyPDF: (data) => ipcRenderer.invoke('modify-pdf', data ), 
@@ -10,7 +11,15 @@ contextBridge.exposeInMainWorld('electron', {
   getNamesAddresses: () => ipcRenderer.invoke('get-names-addresses'),
   getPDFDataModel: async () => {
     const PDFDataMod = await ipcRenderer.invoke('get-pdf-data-model');
-    return PDFDataMod;
+    /*const jsonDataMod = Buffer.from(PDFDataMod, 'base64').toString('utf-8'); 
+    const data = JSON.parse(jsonDataMod); 
+    console.log(jsonDataMod, "in preload.js");*/
+    return PDFDataMod; 
+  },
+  createBuffer: (data, encoding) => {
+    return Buffer.from(data, encoding);
   }
+
 });
+
 

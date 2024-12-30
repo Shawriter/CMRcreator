@@ -2,11 +2,12 @@ const { app, BrowserWindow, ipcMain, screen } = require('electron');
 const path = require('path');
 const { setupIPCHandlers } = require('./ipcHandlers'); 
 const db = require('./renderer/ScriptsJS/dbconn');
-//const PDFDataModel = require('./renderer/ScriptsJS/model');
-//const objs = require('./renderer/ScriptsJS/objectsToPDF.js');
+
+
+
 
 function createWindow() {
-  // Get screen dimensions dynamically
+  
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const preloadPath = path.join(__dirname, 'preload.js');
   console.log('Preload path:', preloadPath);
@@ -19,17 +20,20 @@ function createWindow() {
       nodeIntegration: false,  
       contextIsolation: true,  
       preload: preloadPath, 
-      enableRemoteModule: false, // Keep secure
+      enableRemoteModule: false, 
+      sandbox: true, 
     },
   });
   
   win.loadFile(path.join(__dirname, 'renderer/pages/index.html'));
+  win.webContents.openDevTools();
+
 }
 
 app.whenReady().then(() => {
 
   createWindow(); 
-  setupIPCHandlers()
+  setupIPCHandlers();
 });
 
 app.on('window-all-closed', () => {
@@ -41,6 +45,6 @@ app.on('activate', () => {
 });
 
 app.on('before-quit', () => {
-  db.close(); // Ensure the database connection is closed
+  db.close(); 
 });
 

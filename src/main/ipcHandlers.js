@@ -2,38 +2,50 @@ const { ipcMain } = require('electron');
 const fs = require('fs');
 const { PDFDocument } = require('pdf-lib');
 const db = require('./renderer/ScriptsJS/dbconn');
-const dbOps = require('./renderer/ScriptsJS/dbOps');
+const { Buffer } = require('buffer');
+const cloneDeep = require('lodash.clonedeep');
 const PDFDataModel = require('./renderer/ScriptsJS/model');
-
 
 function setupIPCHandlers() {
  
-  ipcMain.handle('get-pdf-data-model', () => {
-    return PDFDataModel;
+  ipcMain.handle('get-Buffer', () => {
+     return Buffer;
   });
 
-  ipcMain.handle('modify-pdf', async (event, { inputPath, outputPath, text }) => {
+
+  ipcMain.handle('get-pdf-data-model', () => {
+
+    const model = new PDFDataModel();
+    const data = cloneDeep(model);
+   
+    return data;
+    
+  });
+  
+
+
+  ipcMain.handle('modify-pdf', async (event, { inputPath, outputPath, text, formObjectsFilled}) => {
     
       try {
         const pdfBytes = fs.readFileSync(inputPath);
         const pdfDoc = await PDFDocument.load(pdfBytes);
+        
         const page = pdfDoc.getPages()[0];
         const data = JSON.parse(text);
-  
+        console.log(formObjectsFilled[0], "in ipcHandlers.js");
+        console.log(formObjectsFilled[1], "in ipcHandlers.js");
+        console.log(formObjectsFilled[2], "in ipcHandlers.js");
+        console.log(formObjectsFilled[3], "in ipcHandlers.js");
         
         const address = data.addresses[0];
-        page.drawText(`Name: ${address.fname}`, { x: 50, y: 700, size: 12 });
-        page.drawText(`Address: ${address.address}`, { x: 50, y: 680, size: 12 });
-        page.drawText(`Zipcode: ${address.zip}`, { x: 50, y: 660, size: 12 });
-        page.drawText(`Country: ${address.country}`, { x: 50, y: 640, size: 12 });
-        page.drawText(`Reference: ${address.reference}`, { x: 50, y: 620, size: 12 });
-        page.drawText(`Phone Number: ${address.phone}`, { x: 50, y: 600, size: 12 });
-        page.drawText(`Email: ${address.email}`, { x: 50, y: 580, size: 12 });
+      
   
         const modifiedPdfBytes = await pdfDoc.save();
+        
         fs.writeFileSync(outputPath, modifiedPdfBytes);
+
   
-        return { success: true };
+        return { success: true};
       } catch (error) {
         console.error('Error modifying PDF:', error);
         return { success: false, error: error.message };
