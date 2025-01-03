@@ -10,7 +10,7 @@ function createWindow() {
   
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const preloadPath = path.join(__dirname, 'preload.js');
-  console.log('Preload path:', preloadPath);
+  
   const win = new BrowserWindow({
     width: width,       
     height: height,     
@@ -26,7 +26,7 @@ function createWindow() {
   });
   
   win.loadFile(path.join(__dirname, 'renderer/pages/index.html'));
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
 
 }
 

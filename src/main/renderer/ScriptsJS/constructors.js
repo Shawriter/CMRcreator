@@ -11,11 +11,21 @@ class AddressesConstructor {
   }
   
   class PackageConstructor {
-    constructor(weight, length, width, height) {
+    constructor(qty, type, weight, length, width, height, nostacking = false, dgoods = false, UNnumber = '') {
+      this.qty = qty;
+      this.type = type;
       this.weight = weight;
       this.length = length;
       this.width = width;
       this.height = height;
+      this.volumem3 = this.calculateVolume(length, width, height);
+      this.nostacking = Boolean(nostacking);
+      this.dgoods = Boolean(dgoods);
+      this.UNnumber = UNnumber;
+    }
+  
+    calculateVolume(length, width, height) {
+      return (length * width * height) / 1000000; 
     }
   }
   
@@ -25,11 +35,7 @@ class AddressesConstructor {
       this.packages = [];
     }
   }
-  
-  class Constructors {
-    constructor() {
-      this.formObjects = [];
-    }
+
   
     AddressesConstructor = AddressesConstructor;
     PackageConstructor = PackageConstructor;

@@ -35,10 +35,15 @@ class PDFDataModel {
     }
 
     const pkg = new PackageConstructor(
-      /*data.weight,
+      data.qty,
+      data.type,
+      data.weight,
       data.length,
       data.width,
-      data.height*/
+      data.height,
+      data.nostacking,
+      data.dgoods,
+      data.UNnumber
     );
     this.shipment.packages.push(pkg);
   }

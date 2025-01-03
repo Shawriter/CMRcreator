@@ -1,51 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    
+    document.getElementById('clearbutton').addEventListener('click', clearForm);
     document.getElementById('plus_icon').addEventListener('click', appendPackageNode);
     document.getElementById('minus_icon').addEventListener('click', removePackageNode);
 
     
-// Get data from the required fields
+
+
+function formChange(jsObAddrPkgs, addresses) {
+
+                jsObAddrPkgs.shipment.addresses.push([...addresses]); 
+                addresses.length = 0; 
+                console.log(jsObAddrPkgs.shipment.addresses);
+               
+}
+
 function getFormAddresses(jsObAddrPkgs) {
-
+    
     var breakswitch = 1;
-    let formObjects = [];
-    let addresses = [];
+
     for (var i = 0; i < 4; i++) {
-
-        //Loop through the form data get the values by form id increment +1
-        let formData = new FormData(document.querySelector("#form"+(i+1).toString()));
-
-        if(breakswitch == 0){
-            break;
-        }
-       
-
+        let formData = new FormData(document.querySelector("#form" + (i + 1).toString()));
+        let formChangeCounter = "form" + (i + 1).toString();
+        let addresses = []; // Reset addresses for each form
+    
         for (var pair of formData.entries()) {
+            addresses.push([pair[0], pair[1]]);
 
-            if(i >= 4 && pair[1] == ""){
-
-                return;
-            
-            }
-            
-            let formChangeCounter = document.getElementById("form"+(i+1).toString()).id;
-            
-            console.log(pair[0]+ ', '+ pair[1]);
-            console.log(formChangeCounter, i);
-            if(pair[0] == "Email"){
-
-                formChange(jsObAddrPkgs, i, formChangeCounter, formObjects);
-
-            }
-            
-            
-        }
-            //console.log(formObjects[0]);
-            
-            //myConstructorClosure.uniteFormData();
-
-            if(pair[0] == "fname" || pair[0] == "address" || pair[0] == "Country"){
+            /*if(pair[0] == "fname" || pair[0] == "address" || pair[0] == "Country"){
                 
                 if(pair[1] == ""){
 
@@ -56,65 +38,14 @@ function getFormAddresses(jsObAddrPkgs) {
 
                 }
 
-            }
+            }*/
         }
-        console.log(formObjects);
-        return formObjects;
-            
-    }
-
-function formChange(jsObAddrPkgs, addresses, formChangeCounter, formObjects) {
-
-
-                //console.log(jsObAddrPkgs.shipment);
-
-                switch(formChangeCounter){  
-                    case "form1":
-                        
-                        //formObjects.push(jsObAddrPkgs.shipment.addresses);
-                        jsObAddrPkgs.shipment.addresses.push(addresses);
-                        //formObjects.push(sender);
-                        //console.log(formObjects[0]);
-                        addresses.length = 0;
-                        //console.log("form1");
-                        break;
-                        
-                    case "form2":
-                        
-                        /*let receiver = jsObAddrPkgs.shipment.Receiverproto(...addresses);
-                        console.log(receiver);
-                        formObjects.push(receiver);
-                        //console.log(formObjects[1]);*/
-                        formObjects.push(jsObAddrPkgs.shipment.addresses);
-                        
-                        addresses.length = 0;
-                        //console.log("form2");
-                        break;
-
-                    case "form3":
-
-                        /*let collection = jsObAddrPkgs.shipment.CollectionAddressproto(...addresses);
-                        formObjects.push(collection);*/
-                        formObjects.push(jsObAddrPkgs.shipment.addresses);
-                        
-                        
-                        //addressObjects.length = 0;
-                        break;
-
-                    case "form4":
-
-                        /*let ReceiverIfNotTheSame = jsObAddrPkgs.shipment.ReceiverIfNotTheSameproto(...addresses);
-                        formObjects.push(ReceiverIfNotTheSame);*/
-                        formObjects.push(jsObAddrPkgs.shipment.addresses);
-                        
-                        //addressObjects.length = 0;
-                        break;
-
-                    default:
-                        console.log("No form found");
-            }
     
+        // Call formChange only once after collecting all entries
+        formChange(jsObAddrPkgs, addresses);
+    }
 }
+
 function getPkgs(jsObAddrPkgs) {
    
 
@@ -127,9 +58,10 @@ function getPkgs(jsObAddrPkgs) {
 
 function clearForm() {
 
-    var i;
+    let i;
+
     for (i = 0; i < 4; i++) {
-    document.getElementById("form"+(i+1).toString()).reset();
+       document.getElementById("form"+(i+1).toString()).reset();
     }
 
 }
@@ -148,7 +80,7 @@ function appendPackageNode(event) {
 
     var clonedContainer = originalContainer.cloneNode(true);
 
-    // Copy input values
+    
     var originalInputs = originalContainer.querySelectorAll("input");
     var clonedInputs = clonedContainer.querySelectorAll("input");
 
@@ -233,8 +165,9 @@ document.getElementById('submitbutton').addEventListener('click', async () => {
       const jsObAddrPkgs = await window.electron.getPDFDataModel();
       
       let formObjectsFilled = getFormAddresses(jsObAddrPkgs);
-      let pkgObjectsFilled = getFormAddresses(jsObAddrPkgs);
+      //let pkgObjectsFilled = getFormAddresses(jsObAddrPkgs);
       //console.log(typeof formObjectsFilled, "in renderer.js");
+      //console.log(jsObAddrPkgs, "in renderer.js");
       const inputPath = 'CMR_templates/CMRtemplate.pdf';
       const outputPath = 'output.pdf';
       const text = JSON.stringify(jsObAddrPkgs.shipment, null, 2); 
