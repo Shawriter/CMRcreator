@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('clearbutton').addEventListener('click', clearForm);
     document.getElementById('plus_icon').addEventListener('click', appendPackageNode);
     document.getElementById('minus_icon').addEventListener('click', removePackageNode);
-
+    
+    let icon = 0;
     
 
 
@@ -22,7 +23,7 @@ function getFormAddresses(jsObAddrPkgs) {
     for (var i = 0; i < 4; i++) {
         let formData = new FormData(document.querySelector("#form" + (i + 1).toString()));
         let formChangeCounter = "form" + (i + 1).toString();
-        let addresses = []; // Reset addresses for each form
+        let addresses = [];
     
         for (var pair of formData.entries()) {
             addresses.push([pair[0], pair[1]]);
@@ -68,7 +69,7 @@ function clearForm() {
 //Duplicate cllcontainer div package element
 function appendPackageNode(event) {
 
-    event.preventDefault();
+    
 
     if (typeof pkgnmbr == "undefined") {
         var pkgnmbr = 1;
@@ -100,21 +101,29 @@ function appendPackageNode(event) {
 
     var divslength = document.querySelectorAll(".cllcontainer").length;
     clonedContainer.id = "appended" + divslength;
+    console.log(clonedContainer.id);
     
 
     document.body.appendChild(clonedContainer);
-
-    const clonedPlusIcon = clonedContainer.querySelector('#plus_icon');
-    if (clonedPlusIcon) {
-      clonedPlusIcon.id = "plus_icon" + divslength;
-    }
-
     
-    clonedPlusIcon.addEventListener('click', (e) => {
-      console.log('Cloned container clicked:', clonedPlusIcon.id);
-     
-    });
-  
+
+    var clonedPlusIcon = clonedContainer.querySelector('#plus_icon');
+    var clonedMinusIcon = clonedContainer.querySelector('#minus_icon');
+
+    //console.log(clonedPlusIcon, "clonedPlusIcon");
+
+    //At this point every pkg div gets the same id plus_icon, as it doesnt matter for the functionality, it is left as is
+    if (clonedPlusIcon) {
+        
+        //const newId = "plus_icon" + icon++;
+        //clonedPlusIcon.id = newId;
+        console.log(icon, "icon");
+        
+        clonedPlusIcon.addEventListener('click', appendPackageNode);  
+        clonedMinusIcon.addEventListener('click', removePackageNode); 
+    } else {
+        console.error('Cloned container is missing #plus_icon');
+    }
 
 
     updatePackageNumbers();
@@ -123,7 +132,7 @@ function appendPackageNode(event) {
 // Remove cllcontainer div package element
 function removePackageNode(event) {
 
-    event.preventDefault();
+    
 
 
     var containerToRemove = event.target.closest(".cllcontainer");

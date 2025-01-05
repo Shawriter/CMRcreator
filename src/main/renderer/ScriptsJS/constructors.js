@@ -25,7 +25,7 @@ class AddressesConstructor {
     }
   
     calculateVolume(length, width, height) {
-      return (length * width * height) / 1000000; 
+      return (length * width * height) / 1000000; // Assuming dimensions are in millimeters
     }
   }
   
@@ -35,11 +35,14 @@ class AddressesConstructor {
       this.packages = [];
     }
   }
-
   
-    AddressesConstructor = AddressesConstructor;
-    PackageConstructor = PackageConstructor;
-    ShipmentConstructor = ShipmentConstructor;
+  class Constructors {
+    constructor() {
+      AddressesConstructor = AddressesConstructor;
+      PackageConstructor = PackageConstructor;
+      ShipmentConstructor = ShipmentConstructor;
+    }
+  
   
     Senderproto(...args) {
       return new AddressesConstructor(...args);

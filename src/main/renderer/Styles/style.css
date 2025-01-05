@@ -325,17 +325,17 @@ input:invalid {
     position: relative;
     left: 160px;
 }
-#plus_icon{
+.custom-icon{
     position: relative;
     left: 280px;
     bottom: 5px;
     font-size: 20px;
     color: #000000;
 }
-#plus_icon:hover{
+.custom-icon:hover{
     color: #7c9b00;
 }
-#plus_icon:active{
+.custom-icon:active{
     color: #00059b;
 }
 
