@@ -8,22 +8,35 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
 
-function formChange(jsObAddrPkgs, addresses) {
+function formChange(jsObAddrPkgs, addresses, pkgObjects) {
+                
+                if (addresses) {
 
-                jsObAddrPkgs.shipment.addresses.push([...addresses]); 
+                    jsObAddrPkgs.shipment.addresses.push([...addresses]); 
+                    console.log(jsObAddrPkgs.shipment.addresses);
+
+                }
+                if (pkgObjects) {
+
+                    jsObAddrPkgs.shipment.packages.push([...pkgObjects]);
+                    console.log(jsObAddrPkgs.shipment.packages);
+
+                }
+                
                 addresses.length = 0; 
-                console.log(jsObAddrPkgs.shipment.addresses);
+
                
 }
 
-function getFormAddresses(jsObAddrPkgs) {
+function getFormAddresses(jsObAddrPkgs, pkgObjects) {
     
     var breakswitch = 1;
-
+    let addresses = [];
     for (var i = 0; i < 4; i++) {
         let formData = new FormData(document.querySelector("#form" + (i + 1).toString()));
         let formChangeCounter = "form" + (i + 1).toString();
-        let addresses = [];
+        
+        
     
         for (var pair of formData.entries()) {
             addresses.push([pair[0], pair[1]]);
@@ -42,15 +55,44 @@ function getFormAddresses(jsObAddrPkgs) {
             }*/
         }
     
-        // Call formChange only once after collecting all entries
         formChange(jsObAddrPkgs, addresses);
     }
+    
+    const cllContainers = document.querySelectorAll('.cllcontainer');
+
+  
+    cllContainers.forEach((container, index) => {
+            let pkgObjects = [];
+            console.log(`Container ${index + 1}:`);
+
+            
+            let inputs = container.querySelectorAll('input');
+            let selects = container.querySelectorAll('select');
+
+            selects.forEach(select => {
+                console.log(`Select ID: ${select.id}, Value: ${select.value}`);
+                pkgObjects.push([select.id, select.value]);
+            });
+            inputs.forEach(input => {
+
+                if (input.type === 'checkbox') {
+                    console.log(`Input ID: ${input.id}, Checked: ${input.checked}`);
+                    pkgObjects.push([input.id, input.checked]);
+                } else {
+                    console.log(`Input ID: ${input.id}, Value: ${input.value}`);
+                    pkgObjects.push([input.id, input.value]);
+                }
+            
+    });
+
+  });
+  formChange(jsObAddrPkgs, null, pkgObjects);
 }
 
 function getPkgs(jsObAddrPkgs) {
    
 
-    let pkgObjects = [];
+    
 
 }
 /**

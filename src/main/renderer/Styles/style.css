@@ -400,7 +400,7 @@ input:invalid {
     height: 20px;
     color: #000000;
 }
-#dimensions_1, #dimensions_2, #dimensions_3, #dimensions_4, #dimensions_5{
+#dimensions_1, #dimensions_2, #dimensions_3, #dimensions_4, #UN_number{
     font-size: 15px;
     max-width: 90px;
     margin-right: 10px;
@@ -416,7 +416,7 @@ input:invalid {
 #dimensions_4{
     max-width: 25px;
 }
-#dimensions_5{
+#UN_number{
     position: relative;
     left: 160px;
     max-width: 50px;
