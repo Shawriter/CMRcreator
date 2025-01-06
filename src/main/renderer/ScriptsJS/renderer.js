@@ -14,6 +14,7 @@ function formChange(jsObAddrPkgs, addresses, pkgObjects) {
 
                     jsObAddrPkgs.shipment.addresses.push([...addresses]); 
                     console.log(jsObAddrPkgs.shipment.addresses);
+                    addresses.length = 0; 
 
                 }
                 if (pkgObjects) {
@@ -22,16 +23,14 @@ function formChange(jsObAddrPkgs, addresses, pkgObjects) {
                     console.log(jsObAddrPkgs.shipment.packages);
 
                 }
-                
-                addresses.length = 0; 
-
-               
+                   
 }
 
-function getFormAddresses(jsObAddrPkgs, pkgObjects) {
+function getFormAddresses(jsObAddrPkgs) {
     
     var breakswitch = 1;
     let addresses = [];
+    let pkgObjects = [];
     for (var i = 0; i < 4; i++) {
         let formData = new FormData(document.querySelector("#form" + (i + 1).toString()));
         let formChangeCounter = "form" + (i + 1).toString();
@@ -55,14 +54,14 @@ function getFormAddresses(jsObAddrPkgs, pkgObjects) {
             }*/
         }
     
-        formChange(jsObAddrPkgs, addresses);
+        //formChange(jsObAddrPkgs, addresses);
     }
     
     const cllContainers = document.querySelectorAll('.cllcontainer');
 
-  
+    
     cllContainers.forEach((container, index) => {
-            let pkgObjects = [];
+            
             console.log(`Container ${index + 1}:`);
 
             
@@ -70,23 +69,22 @@ function getFormAddresses(jsObAddrPkgs, pkgObjects) {
             let selects = container.querySelectorAll('select');
 
             selects.forEach(select => {
-                console.log(`Select ID: ${select.id}, Value: ${select.value}`);
+                //console.log(`Select ID: ${select.id}, Value: ${select.value}`);
                 pkgObjects.push([select.id, select.value]);
             });
             inputs.forEach(input => {
 
                 if (input.type === 'checkbox') {
-                    console.log(`Input ID: ${input.id}, Checked: ${input.checked}`);
+                    //console.log(`Input ID: ${input.id}, Checked: ${input.checked}`);
                     pkgObjects.push([input.id, input.checked]);
                 } else {
-                    console.log(`Input ID: ${input.id}, Value: ${input.value}`);
+                    //console.log(`Input ID: ${input.id}, Value: ${input.value}`);
                     pkgObjects.push([input.id, input.value]);
                 }
-            
     });
 
   });
-  formChange(jsObAddrPkgs, null, pkgObjects);
+  formChange(jsObAddrPkgs, addresses, pkgObjects);
 }
 
 function getPkgs(jsObAddrPkgs) {
