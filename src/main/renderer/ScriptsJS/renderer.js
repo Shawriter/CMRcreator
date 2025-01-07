@@ -31,40 +31,36 @@ function getFormAddresses(jsObAddrPkgs) {
     var breakswitch = 1;
     let addresses = [];
     let pkgObjects = [];
+
     for (var i = 0; i < 4; i++) {
         let formData = new FormData(document.querySelector("#form" + (i + 1).toString()));
-        let formChangeCounter = "form" + (i + 1).toString();
+        //let formChangeCounter = "form" + (i + 1).toString();
         
         
     
         for (var pair of formData.entries()) {
+
             addresses.push([pair[0], pair[1]]);
 
-            /*if(pair[0] == "fname" || pair[0] == "address" || pair[0] == "Country"){
-                
-                if(pair[1] == ""){
+            if ((pair[0] == "fname" || pair[0] == "address" || pair[0] == "Country") && (breakswitch != 0)) {
 
-                    var breakswitch = 0;
+                if (pair[1] == "") {
 
+                    breakswitch = 0;
                     alert("Please fill out all the required fields");
                     break;
-
-                }
-
-            }*/
+            }
         }
-    
-        //formChange(jsObAddrPkgs, addresses);
     }
+        
+}
     
     const cllContainers = document.querySelectorAll('.cllcontainer');
 
     
-    cllContainers.forEach((container, index) => {
+    cllContainers.forEach((container) => {
             
-            console.log(`Container ${index + 1}:`);
 
-            
             let inputs = container.querySelectorAll('input');
             let selects = container.querySelectorAll('select');
 
@@ -99,12 +95,20 @@ function getPkgs(jsObAddrPkgs) {
 
 function clearForm() {
 
-    let i;
+    /*let i;
 
     for (i = 0; i < 4; i++) {
        document.getElementById("form"+(i+1).toString()).reset();
-    }
+    }*/
+    
+    let alertmsg = confirm("Are you sure you want to clear all the fields and start over?");
 
+    if (alertmsg == true) {
+
+        location.reload();
+
+    }
+    
 }
 //Duplicate cllcontainer div package element
 function appendPackageNode(event) {
@@ -116,14 +120,14 @@ function appendPackageNode(event) {
     }
 
 
-    var originalContainer = event.target.closest(".cllcontainer");
+    let originalContainer = event.target.closest(".cllcontainer");
 
 
-    var clonedContainer = originalContainer.cloneNode(true);
+    let clonedContainer = originalContainer.cloneNode(true);
 
     
-    var originalInputs = originalContainer.querySelectorAll("input");
-    var clonedInputs = clonedContainer.querySelectorAll("input");
+    let originalInputs = originalContainer.querySelectorAll("input");
+    let clonedInputs = clonedContainer.querySelectorAll("input");
 
     for (let i = 0; i < originalInputs.length; i++) {
         clonedInputs[i].value = originalInputs[i].value; 
@@ -131,24 +135,26 @@ function appendPackageNode(event) {
     }
 
 
-    var originalSelects = originalContainer.querySelectorAll("select");
-    var clonedSelects = clonedContainer.querySelectorAll("select");
+    let originalSelects = originalContainer.querySelectorAll("select");
+    let clonedSelects = clonedContainer.querySelectorAll("select");
 
     for (let i = 0; i < originalSelects.length; i++) {
         clonedSelects[i].value = originalSelects[i].value; 
     }
 
 
-    var divslength = document.querySelectorAll(".cllcontainer").length;
+    let divslength = document.querySelectorAll(".cllcontainer").length;
     clonedContainer.id = "appended" + divslength;
     console.log(clonedContainer.id);
     
+    moveButtonsDown();
 
     document.body.appendChild(clonedContainer);
     
+    
 
-    var clonedPlusIcon = clonedContainer.querySelector('#plus_icon');
-    var clonedMinusIcon = clonedContainer.querySelector('#minus_icon');
+    let clonedPlusIcon = clonedContainer.querySelector('#plus_icon');
+    let clonedMinusIcon = clonedContainer.querySelector('#minus_icon');
 
     //console.log(clonedPlusIcon, "clonedPlusIcon");
 
@@ -157,28 +163,94 @@ function appendPackageNode(event) {
         
         //const newId = "plus_icon" + icon++;
         //clonedPlusIcon.id = newId;
-        console.log(icon, "icon");
-        
         clonedPlusIcon.addEventListener('click', appendPackageNode);  
         clonedMinusIcon.addEventListener('click', removePackageNode); 
+
     } else {
+
         console.error('Cloned container is missing #plus_icon');
+
     }
 
 
     updatePackageNumbers();
-}
 
+}
+function moveButtonsUp() {
+
+    console.log("moveButtonsUp");
+    let one = 1;
+
+    const buttons = document.querySelector('.buttons-container');
+
+    if (buttons) {
+
+        const currentTop = parseInt(buttons.style.top || '0', 10);
+        console.log(currentTop);
+
+        if (currentTop != 0) {
+
+            buttons.style.top = `${currentTop - 110}px`;
+        }
+       
+
+    } else {
+
+      console.error('Buttons container not found');
+
+    }
+
+}
+function moveButtonsDown() {
+    
+    console.log("moveButtonsDown");
+    let one = 1;
+
+    const buttons = document.querySelector('.buttons-container');
+    const body = document.querySelector('.first_form_body');
+    const currentBodyHeight = parseInt(body.style.height || '100', 10);
+     
+    if (buttons) {
+
+        const currentTop = parseInt(buttons.style.top || '0', 10);
+        
+        console.log(currentBodyHeight);
+
+        if (currentTop == 0) {
+            buttons.style.top = '130px';
+            body.style.height =  `${currentBodyHeight + 50}vh`;
+            console.log(body.style.height);
+        }
+        else if (currentTop > 3700  && (one != 0)) { // Not letting the buttons go too far down
+            
+            buttons.style.top = '3400px';
+            one = 0;
+
+        } else {
+            buttons.style.top = `${currentTop + 110}px`;
+
+            body.style.height =  `${currentBodyHeight + 50}vh`;
+            console.log(body.style.height);
+        }
+        
+        console.log(buttons.style.top);
+
+    } else {
+
+      console.error('Buttons container not found');
+
+    }
+
+}
 // Remove cllcontainer div package element
 function removePackageNode(event) {
-
-    
 
 
     var containerToRemove = event.target.closest(".cllcontainer");
     if (containerToRemove && document.querySelectorAll(".cllcontainer").length > 1) {
         
         containerToRemove.remove();
+        moveButtonsUp();
 
     }
     else {
