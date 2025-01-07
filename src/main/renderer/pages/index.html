@@ -6,11 +6,169 @@
     <title>CMRmaker</title>
     <link rel="stylesheet" href="../Styles/style.css">
     <script src="ScriptsJS/start.js"></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+        const gridContainer = document.querySelector('.grid-container');
+        const rows = 5;
+        const cols = 5;
+
+        // Generate grid dynamically
+        for (let i = 0; i < rows * cols; i++) {
+            const node = document.createElement('div');
+            node.classList.add('grid-node');
+            gridContainer.appendChild(node);
+
+            
+            node.addEventListener('mouseenter', () => {
+            node.classList.add('moving'); 
+            });
+
+            node.addEventListener('mouseleave', () => {
+            node.classList.remove('moving'); 
+            });
+
+            node.addEventListener('click', () => {
+            node.style.backgroundColor = 'rgba(0,0,0,0)';
+            });
+        }
+
+        
+        
+    });
+  </script>
+   <canvas id="particleCanvas"></canvas>
+
+   <script>
+     const canvas = document.getElementById('particleCanvas');
+     const ctx = canvas.getContext('2d');
+ 
+     // Resize canvas to fit window
+     canvas.width = window.innerWidth;
+     canvas.height = window.innerHeight;
+ 
+     window.addEventListener('resize', () => {
+       canvas.width = window.innerWidth;
+       canvas.height = window.innerHeight;
+     });
+ 
+     const particles = [];
+     const mouse = { x: null, y: null };
+ 
+     // Track mouse position
+     window.addEventListener('mousemove', (event) => {
+       mouse.x = event.clientX;
+       mouse.y = event.clientY;
+     });
+ 
+     // Particle class
+     class Particle {
+       constructor(x, y, radius, color) {
+         this.x = x;
+         this.y = y;
+         this.radius = radius;
+         this.color = color;
+         this.dx = Math.random() * 2 - 1; // Horizontal speed
+         this.dy = Math.random() * 2 - 1; // Vertical speed
+         this.opacity = 0.7;
+       }
+ 
+       // Draw particle
+       draw() {
+         ctx.beginPath();
+         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+         ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+         ctx.fill();
+         ctx.closePath();
+       }
+ 
+       // Update particle position
+       update() {
+         this.x += this.dx;
+         this.y += this.dy;
+ 
+         // Bounce off edges
+         if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
+           this.dx = -this.dx;
+         }
+         if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) {
+           this.dy = -this.dy;
+         }
+ 
+         // Interaction with mouse
+         const distance = Math.hypot(mouse.x - this.x, mouse.y - this.y);
+         const maxDistance = 100;
+ 
+         if (distance < maxDistance) {
+           const angle = Math.atan2(mouse.y - this.y, mouse.x - this.x);
+           const pushForce = (maxDistance - distance) / maxDistance;
+           this.dx -= Math.cos(angle) * pushForce * 0.5;
+           this.dy -= Math.sin(angle) * pushForce * 0.5;
+         }
+ 
+         this.draw();
+       }
+     }
+ 
+     // Initialize particles
+     function initParticles(count) {
+       for (let i = 0; i < count; i++) {
+         const x = Math.random() * canvas.width;
+         const y = Math.random() * canvas.height;
+         const radius = Math.random() * 3 + 2;
+         const color = 'white';
+         particles.push(new Particle(x, y, radius, color));
+       }
+     }
+ 
+     // Animation loop
+     function animate() {
+       ctx.clearRect(0, 0, canvas.width, canvas.height);
+ 
+       particles.forEach((particle) => particle.update());
+ 
+       // Draw lines between nearby particles
+       connectParticles();
+ 
+       requestAnimationFrame(animate);
+     }
+ 
+     // Draw lines between particles that are close
+     function connectParticles() {
+       const maxDistance = 150;
+ 
+       for (let i = 0; i < particles.length; i++) {
+         for (let j = i + 1; j < particles.length; j++) {
+           const distance = Math.hypot(
+             particles[i].x - particles[j].x,
+             particles[i].y - particles[j].y
+           );
+ 
+           if (distance < maxDistance) {
+             ctx.beginPath();
+             ctx.moveTo(particles[i].x, particles[i].y);
+             ctx.lineTo(particles[j].x, particles[j].y);
+             ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / maxDistance})`;
+             ctx.lineWidth = 0.5;
+             ctx.stroke();
+           }
+         }
+       }
+     }
+ 
+     // Start
+     initParticles(100);
+     animate();
+   </script>
+      
     
 </head>
 <body class="index_body">
     <h1 class="h1_index">CMRmaker</h1>
     <p class="h1_index">Create waybills</p>
+    <div class="grid-container">
+        <!-- Grid nodes will be generated dynamically -->
+    </div>
+
     
         <!----<form class="index_div" action="/first_form.html" method="post">
             <div class="logindiv">
@@ -26,7 +184,7 @@
             <div class="regforgot" >
                 <!----<span class="psw"><a href="#">Forgot password?</a></span>
                 <span class="register"><a href="#">Register</a></span>-->
-                <span class="withoutreg"><a href="first_form.html">Create waybills>></a></span>
+                <span class="withoutreg"><a href="first_form.html">Create waybills</a></span>
             </div>
             
         </form>

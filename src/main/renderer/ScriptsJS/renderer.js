@@ -248,18 +248,19 @@ function removePackageNode(event, clearsender) {
 
     
     if (event){
-
+        
+        clearsender = false;
         var containerToRemove = event.target.closest(".cllcontainer");
 
     }
     
-    if (clearsender = true){
+    /*if (clearsender = true){
 
-        let containers = document.querySelectorAll(".cllcontainer").length;
+        let containers = document.querySelectorAll(".cllcontainer");
 
         containers.forEach(container => {
             
-            if (containers > 1){
+            if (containers.length > 1 && (container.id != 'firstcontainer')){
                   
                 container.remove();
 
@@ -272,7 +273,7 @@ function removePackageNode(event, clearsender) {
             
         });
 
-    }
+    }*/
 
     if (containerToRemove && document.querySelectorAll(".cllcontainer").length > 1) {
         
@@ -281,9 +282,13 @@ function removePackageNode(event, clearsender) {
 
     }
     else {
+        
+        if(containers = null){
 
-        alert("You can't remove the last package");
+            alert("You can't remove the last package");
 
+        }
+        
     }
 
     updatePackageNumbers();
