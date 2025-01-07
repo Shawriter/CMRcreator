@@ -1,10 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    document.getElementById('clearbutton').addEventListener('click', clearForm);
-    document.getElementById('plus_icon').addEventListener('click', appendPackageNode);
-    document.getElementById('minus_icon').addEventListener('click', removePackageNode);
+    initializeEventListeners();
     
-    let icon = 0;
+    function initializeEventListeners() {
+        document.getElementById('clearbutton').addEventListener('click', clearForm);
+        document.getElementById('submitbutton').addEventListener('click', getFormAddresses);
+        document.getElementById('plus_icon').addEventListener('click', appendPackageNode);
+        document.getElementById('minus_icon').addEventListener('click', removePackageNode);
+      }
     
 
 
@@ -95,19 +98,17 @@ function getPkgs(jsObAddrPkgs) {
 
 function clearForm() {
 
-    /*let i;
-
+    let i;
+    let clearsender = true;
+    
     for (i = 0; i < 4; i++) {
        document.getElementById("form"+(i+1).toString()).reset();
-    }*/
-    
-    let alertmsg = confirm("Are you sure you want to clear all the fields and start over?");
-
-    if (alertmsg == true) {
-
-        location.reload();
-
     }
+    
+    //confirm("Are you sure you want to clear all the fields and start over?");
+    removePackageNode(null, clearsender);
+    initializeEventListeners();
+    
     
 }
 //Duplicate cllcontainer div package element
@@ -243,10 +244,36 @@ function moveButtonsDown() {
 
 }
 // Remove cllcontainer div package element
-function removePackageNode(event) {
+function removePackageNode(event, clearsender) {
 
+    
+    if (event){
 
-    var containerToRemove = event.target.closest(".cllcontainer");
+        var containerToRemove = event.target.closest(".cllcontainer");
+
+    }
+    
+    if (clearsender = true){
+
+        let containers = document.querySelectorAll(".cllcontainer").length;
+
+        containers.forEach(container => {
+            
+            if (containers > 1){
+                  
+                container.remove();
+
+            }
+            else {
+
+                return;
+
+            }
+            
+        });
+
+    }
+
     if (containerToRemove && document.querySelectorAll(".cllcontainer").length > 1) {
         
         containerToRemove.remove();
