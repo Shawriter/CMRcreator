@@ -1,1 +1,1 @@
-<img width="1337" alt="cover" src="https://github.com/Shawriter/CMRcreator/assets/87026840/cdb707e0-8f32-49c5-be27-9ecf259e2cba">
+<img width="1000" alt="cover" src="https://github.com/user-attachments/assets/a2b22bee-104e-40be-a248-6b9bdb0ebe42" />
