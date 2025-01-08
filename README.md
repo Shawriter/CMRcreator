@@ -1,1 +1,1 @@
-<img src="[path-to-image.jpg](https://github.com/Shawriter/CMRcreator/blob/6feb28e38fd9c9b03714d1d7bb5cf9425371c05f/cover.PNG)">
+<img src="https://github.com/Shawriter/CMRcreator/blob/6feb28e38fd9c9b03714d1d7bb5cf9425371c05f/cover.PNG">
