@@ -13,50 +13,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function formChange(jsObAddrPkgs, addresses, pkgObjects) {
                 
-                if (addresses) {
-
-                    jsObAddrPkgs.shipment.addresses.push([...addresses]); 
-                    console.log(jsObAddrPkgs.shipment.addresses);
-                    addresses.length = 0; 
-
-                }
-                if (pkgObjects) {
-
-                    jsObAddrPkgs.shipment.packages.push([...pkgObjects]);
-                    console.log(jsObAddrPkgs.shipment.packages);
-
-                }
+    if (!jsObAddrPkgs.shipment) {
+        jsObAddrPkgs.shipment = {};
+      }
+      if (!jsObAddrPkgs.shipment.addresses) {
+        jsObAddrPkgs.shipment.addresses = [];
+      }
+      if (!jsObAddrPkgs.shipment.packages) {
+        jsObAddrPkgs.shipment.packages = [];
+      }
+    
+      if (addresses.length > 10) {
+        jsObAddrPkgs.shipment.addresses.push([...addresses]);
+        addresses.length = 0;
+      }
+      if (pkgObjects) {
+        jsObAddrPkgs.shipment.packages.push([...pkgObjects]);
+      }
+    
+      if (jsObAddrPkgs.shipment.addresses != null && jsObAddrPkgs.shipment.packages != null) {
+        return jsObAddrPkgs.shipment;
+      }
                    
 }
 
 function getFormAddresses(jsObAddrPkgs) {
     
     var breakswitch = 1;
+    let k = 0; //iterator
     let addresses = [];
     let pkgObjects = [];
-
-    for (var i = 0; i < 4; i++) {
-        let formData = new FormData(document.querySelector("#form" + (i + 1).toString()));
-        //let formChangeCounter = "form" + (i + 1).toString();
-        
-        
     
-        for (var pair of formData.entries()) {
 
-            addresses.push([pair[0], pair[1]]);
+    try {
+        
+        for (var i = 0; i < 4; i++) {
 
-            if ((pair[0] == "fname" || pair[0] == "address" || pair[0] == "Country") && (breakswitch != 0)) {
+            let formData = new FormData(document.querySelector("#form" + (i + 1).toString()));
+            //let formChangeCounter = "form" + (i + 1).toString();
+            
+        
+            for (var pair of formData.entries()) {
 
-                if (pair[1] == "") {
+                addresses.push([pair[0], pair[1]]);
 
-                    breakswitch = 0;
-                    alert("Please fill out all the required fields");
-                    break;
+                /*if ((pair[0] == "fname" || pair[0] == "address" || pair[0] == "Country") && (breakswitch != 0)) {
+                    
+                    k++; 
+                    
+                    /*if (k >= (formData.entries.length/2)){
+
+                        break;
+
+                    }
+
+                    if (pair[1] == "") {
+
+                        breakswitch = 0;
+                        alert("Please fill out all the required fields");
+                        break;
+                }*/
             }
         }
-    }
         
-}
     
     const cllContainers = document.querySelectorAll('.cllcontainer');
 
@@ -83,6 +102,13 @@ function getFormAddresses(jsObAddrPkgs) {
     });
 
   });
+
+    }catch (e) {
+
+        console.error(e);
+
+    }
+
   formChange(jsObAddrPkgs, addresses, pkgObjects);
 }
 
@@ -321,15 +347,19 @@ document.getElementById('submitbutton').addEventListener('click', async () => {
       //let pkgObjectsFilled = getFormAddresses(jsObAddrPkgs);
       //console.log(typeof formObjectsFilled, "in renderer.js");
       //console.log(jsObAddrPkgs, "in renderer.js");
+      //console.log(jsObAddrPkgs.shipment.addresses);
+      //console.log(jsObAddrPkgs.shipment.packages)
       const inputPath = 'CMR_templates/CMRtemplate.pdf';
+      console.log(inputPath);
       const outputPath = 'output.pdf';
-      const text = JSON.stringify(jsObAddrPkgs.shipment, null, 2); 
-  
-      /*window.electron.modifyPDF({ inputPath, outputPath, text, formObjectsFilled})
+      //const text = JSON.stringify(jsObAddrPkgs.shipment, null, 2); 
+      const text = jsObAddrPkgs.shipment.addresses;
+
+      window.electron.modifyPDF({ inputPath, outputPath, text})
         .then(response => {
           if (response.success) {
 
-            console.log('PDF modified successfully');
+            console.log(text, 'PDF modified successfully');
             
             /*const pdfBuffer = window.electron.createBuffer(response.pdf, 'base64');
             
@@ -339,7 +369,7 @@ document.getElementById('submitbutton').addEventListener('click', async () => {
             
             a.href = url;
             a.download = 'modified.pdf';
-            a.click();
+            a.click();*/
           
           } else {
             alert('Error modifying PDF: ' + response.error);
@@ -348,6 +378,6 @@ document.getElementById('submitbutton').addEventListener('click', async () => {
         .catch(error => {
           console.error(error);
           alert('Error modifying PDF');
-        });*/
+        });
     });
   });
