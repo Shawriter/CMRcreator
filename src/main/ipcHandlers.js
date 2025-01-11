@@ -27,144 +27,183 @@ function setupIPCHandlers() {
   ipcMain.handle('modify-pdf', async (event, { inputPath, outputPath, text}) => {
     
       try {
+
         const pdfBytes = fs.readFileSync(inputPath);
         const pdfDoc = await PDFDocument.load(pdfBytes);
 
-        console.log(text);
-
-        let concatenatedText = '';
-        let k = 0;
-        
         const keyCoordinates = {
-          fname: { x: 50, y: 750 },
-          address: { x: 50, y: 730 },
-          Postal: { x: 50, y: 710 },
-          Country: { x: 50, y: 690 },
-          Reference: { x: 50, y: 670 },
-          Phone: { x: 50, y: 650 },
-          Email: { x: 50, y: 630 },
+          fname: { x: 7, y: 815 },
+          address: { x: 7, y: 800 },
+          Postal: { x: 7, y: 785 },
+          Country: { x: 7, y: 770 },
+          Reference: { x: 280, y: 815 },
+          Phone: { x: 190, y: 665 },
+          Email: { x: 190, y: 655 },
         };
         
-        //writeToPDF();
-        /*text.forEach(subArray => {
-          subArray.forEach(async pair => {
-
-            concatenatedText += `${pair[1]}\n`;
-            
-            for(let i; i < (subArray.length/4); i++){
-              const writtenAddress = await writeToPDF(concatenatedText, i);
-            }
-
-          });
-        });*/
-
-        //async function writeToPDF(concatenatedText, i){
 
           const page = pdfDoc.getPages()[0];
           const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
           const fontSize = 12;
-          let yOffset;
+          
           let adjustedY;
-
-          text.forEach((formData, index, yOffset, adjustedY) => {
-            formData.forEach(([key, value]) => {
+           
+          text.forEach((formData) => {
+            formData.forEach(([key, value], index) => {
+              console.log(index);
               if (!keyCoordinates[key]) {
                 console.warn(`No coordinates defined for key: ${key}`);
                 return;
               }
-              
+              let yOffset = 0;
               const { x, y } = keyCoordinates[key];
-
+              
+                //Writing the addresses to the PDF, this might not be the best solution as I could have passed the types to the constructor when modeling the constructrors and getting the inputs, but it works
                 switch(index){
-
+                  
+                  //For cases up to 8 the sender address let Y coordinates be default
                   case 0:
 
-                    yOffset = index * 100; 
-                    
-                    await draw(yOffset);
                     break;
 
                   case 1:
 
-                    yOffset = index * 100; 
-                    
-                    await draw(yOffset);
                     break;
 
                   case 2:
 
-                    yOffset = index * 100; 
-                    
-                    await draw(yOffset);
                     break;
 
                   case 3:
                     
-                    yOffset = index * 100; 
-                      
-                    await draw(yOffset);
                     break;
 
                   case 4:
-                    
-                    yOffset = index * 100; 
-                      
-                    await draw(yOffset);
+            
                     break;
 
                   case 5:
+
                     break;
+
                   case 6:
+
                     break;
+
                   case 7:
+
                     break;
+
                   case 8:
+
+                  
+                    yOffset = index * 60; 
                     break;
+
                   case 9:
+                    
+                    yOffset = index * 60; 
                     break;
+
                   case 10:
+
+                    yOffset = index * 50; 
                     break;
+
                   case 11:
+
+                    yOffset = index * 50; 
                     break;
+
                   case 12:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 13:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 14:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 15:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 16:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 17:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 18:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 19:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 20:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 21:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 22:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 23:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 24:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 25:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 26:
+
+                    yOffset = index * 100; 
                     break;
+
                   case 27:
+
+                    yOffset = index * 100; 
                     break;
                 }
 
+              draw(yOffset, x, y, value);
+
             });
 
-          async function draw(...args) {
+          function draw(yOffset, x, y, value) {
               
               adjustedY = y - yOffset;
+
               if (value) {
                 page.drawText(value.toString(), {
                   x,
@@ -218,7 +257,7 @@ function setupIPCHandlers() {
       db.all("SELECT * FROM Customers", (err, rows) => {
         if (err) {
           reject(err);
-          console.log("Error get customers")M
+          console.log("Error get customers");
         }
         else {
           resolve(rows);

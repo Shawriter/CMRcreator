@@ -47,13 +47,13 @@ function getFormAddresses(jsObAddrPkgs) {
 
     try {
         
-        for (var i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
 
             let formData = new FormData(document.querySelector("#form" + (i + 1).toString()));
             //let formChangeCounter = "form" + (i + 1).toString();
             
         
-            for (var pair of formData.entries()) {
+            for (let pair of formData.entries()) {
 
                 addresses.push([pair[0], pair[1]]);
 

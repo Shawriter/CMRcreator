@@ -25,7 +25,7 @@ class AddressesConstructor {
     }
   
     calculateVolume(length, width, height) {
-      return (length * width * height) / 1000000; // Assuming dimensions are in millimeters
+      return (length * width * height) / 1000000; 
     }
   }
   
@@ -43,7 +43,7 @@ class AddressesConstructor {
       ShipmentConstructor = ShipmentConstructor;
     }
   
-  
+    //These functions below are not used now as they were left over when I first started to create this project as a vanilla javascript project and used prototypes
     Senderproto(...args) {
       return new AddressesConstructor(...args);
     }

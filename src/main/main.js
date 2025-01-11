@@ -26,7 +26,7 @@ function createWindow() {
   });
   
   win.loadFile(path.join(__dirname, 'renderer/pages/index.html'));
-  //win.webContents.openDevTools();
+  win.webContents.openDevTools();
 
 }
 
