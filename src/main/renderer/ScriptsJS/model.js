@@ -52,18 +52,7 @@ class PDFDataModel {
     return this.shipment;
   }
 
-  /*toJSON() {
-    return {
-      shipment: this.shipment,
-    };
-  }
-
-  static fromJSON(json) {
-    if (!json || typeof json !== 'object') {
-      throw new Error('Invalid JSON for PDFDataModel');
-    }
-    return new PDFDataModel(json);
-  }*/
+  
 }
 
 module.exports = PDFDataModel;
