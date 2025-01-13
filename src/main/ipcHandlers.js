@@ -26,6 +26,8 @@ function setupIPCHandlers() {
 
   ipcMain.handle('modify-pdf', async (event, { inputPath, outputPath, text}) => {
     
+
+
       try {
 
         const pdfBytes = fs.readFileSync(inputPath);
@@ -47,341 +49,365 @@ function setupIPCHandlers() {
           let fontSize = 12;
           
           let adjustedY;
-           
-          text.forEach((formData) => {
-            formData.forEach(([key, value], index) => {
-              
-              if (!keyCoordinates[key]) {
-                console.warn(`No coordinates defined for key: ${key}`);
-                return;
-              }
-              let yOffset = 0;
-              let valuesLength = value.length;
-              let valuesDelegator;
-              const { x, y } = keyCoordinates[key];
+          let firstHalf = '';
+          let secondHalf = '';
+          
+          const p = new Promise((resolve, reject) => {
+            
+            try{
 
-                //Writing the addresses to the PDF, this might not be the best solution as I could have passed the types to the constructor when modeling the constructrors and getting the inputs, but it works
-                switch(index){
-                  
-                  //For cases up to 8 the sender address let Y coordinates be default
-                  case 0:
-                     
-                    valuesDelegator = key + "Sender"
-                    checkLength(valuesLength)
-                    
-                    console.log(valuesDelegator)
-                    break;
-
-                  case 1:
-
-                    valuesDelegator = key + "Sender"
-                    checkLength(valuesLength)
-                    
-                    break;
-
-                  case 2:
-
-                    valuesDelegator = key + "Sender"
-                    checkLength(valuesLength)
-                    
-                    break;
-
-                  case 3:
-                      
-                    valuesDelegator = key + "Sender"
-                    checkLength(valuesLength)
-                    
-                    break;
-
-                  case 4:
-
-                    valuesDelegator = key + "Sender"
-                    checkLength(valuesLength)
-                    
-                    break;
-
-                  case 5: //The sender reference
-                    
-                    valuesDelegator = key + "Sender"
-                    checkLength(valuesLength)
-                   
-                    break;
-
-                  case 6:
-                    
-                    valuesDelegator = key + "Sender"
-                    checkLength(valuesLength)
-                    
-                    break;
-
-                  case 7:
-
-                    checkLength(valuesLength)
-                    valuesDelegator = key + "Sender"
-                    break;
-
-                  case 8:
-
-                    valuesDelegator = key + "Receiver"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 9:
-
-                    valuesDelegator = key + "Receiver"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 10:
-                    
-                    valuesDelegator = key + "Receiver"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 11:
-
-                    valuesDelegator = key + "Receiver"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 12:
-                    
-                    valuesDelegator = key + "Receiver"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 13:
-
-                    valuesDelegator = key + "Receiver"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 14:
-                    
-                    valuesDelegator = key + "Receiver"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 15:
-                    
-                    valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 16:
-                    
-                    valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 17:
-                    
-                    valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 18:
-                    
-                    valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 19:
-                    
-                    valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 20:
-                    
-                    valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 21:
-                    
-                    valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender"
-                    checkLength(valuesLength)
-                    
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 22:
-
-                    valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver"
-                    checkLength(valuesLength)
-
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 23:
-                    
-                    valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver"
-                    checkLength(valuesLength)
-
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 24:
-                    
-                    valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver"
-                    checkLength(valuesLength)
-
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 25:
-                    
-                    valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver"
-                    checkLength(valuesLength)
-
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 26:
-                    
-                    valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver"
-                    checkLength(valuesLength)
-
-                    yOffset = getYOffset(index); 
-                    break;
-
-                  case 27:
-                    
-                    valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver"
-                    checkLength(valuesLength)
-
-                    yOffset = getYOffset(index); 
-                    break;
+            text.forEach((formData) => {
+              formData.forEach(([key, value], index) => {
+                
+                if (!keyCoordinates[key]) {
+                  console.warn(`No coordinates defined for key: ${key}`);
+                  return;
                 }
+                let yOffset = 0;
+                let valuesLength = value.length;
+                let valuesDelegator;
+
+                const { x, y } = keyCoordinates[key];
+
+                  //Writing the addresses to the PDF, this might not be the best solution as I could have passed the types to the constructor when modeling the constructrors and getting the inputs, but it works
+                  switch(index){
+                    
+                    //For cases up to 8 the sender address let Y coordinates be default
+                    case 0:
+                      
+                      valuesDelegator = key + "Sender";
+                      forwarder(index, valuesLength, value);
+                      
+                      console.log(valuesDelegator);
+                      break;
+
+                    case 1:
+
+                      valuesDelegator = key + "Sender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 2:
+
+                      valuesDelegator = key + "Sender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 3:
+                        
+                      valuesDelegator = key + "Sender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 4:
+
+                      valuesDelegator = key + "Sender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 5: //The sender reference
+                      
+                      valuesDelegator = key + "Sender";
+                      forwarder(index, valuesLength, value);
+                    
+                      break;
+
+                    case 6:
+                      
+                      valuesDelegator = key + "Sender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 7:
+
+                      valuesDelegator = key + "Sender";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 8:
+
+                      valuesDelegator = key + "Receiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 9:
+
+                      valuesDelegator = key + "Receiver";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 10:
+                      
+                      valuesDelegator = key + "Receiver";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 11:
+
+                      valuesDelegator = key + "Receiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 12:
+                      
+                      valuesDelegator = key + "Receiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 13:
+
+                      valuesDelegator = key + "Receiver";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 14:
+                      
+                      valuesDelegator = key + "Receiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 15:
+                      
+                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 16:
+                      
+                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 17:
+                      
+                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 18:
+                      
+                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
+                      forwarder(index, valuesLength, value);
+                       
+                      break;
+
+                    case 19:
+                      
+                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 20:
+                      
+                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 21:
+                      
+                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
+                      forwarder(index, valuesLength, value);
+                      
+                      break;
+
+                    case 22:
+
+                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 23:
+                      
+                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 24:
+                      
+                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 25:
+                      
+                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 26:
+                      
+                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+
+                    case 27:
+                      
+                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
+                      forwarder(index, valuesLength, value);
+
+                      break;
+                  }
+                
+                draw(yOffset, x, y, value, firstHalf, secondHalf, valuesLength);
+
+              });
+
+
+            function forwarder(index, valuesLength, value){
+                
+              checkLength(valuesLength, value);
+                      
+              yOffset = getYOffset(index); 
+            
+            }
+
+            function getYOffset(index) {
+
+                if (index <= 8){
+
+                  return 0;
+
+                }
+                if (index <= 14){
+
+                  return (index - 8) * 60;
+
+                }
+
+                return (index - 14) * 100;
+              }
+
+            function checkLength(valuesLength, value, firstHalf, secondHalf){
+
+              if (valuesLength > 15){
+
+                fontSize = 8;
               
-              draw(yOffset, x, y, value, firstHalf, secondHalf);
+              }
+              if(valuesLength > 20)
+              {
+                  //console.log(value);
+                  fontSize = 8;
+                  let midpoint = Math.ceil(valuesLength / 2);
+                  firstHalf = value.slice(0, midpoint);
+                  secondHalf = value.slice(midpoint);
+                  
+              }
+              else{
+                fontSize = 12;
+              }
+
+            }
+            function draw(yOffset, x, y, value, firstHalf, secondHalf, valuesLength) {
+                
+                adjustedY = y - yOffset;
+
+                /*if (value && (fontSize >= 12) && (valuesLength > 20)) {
+                  page.drawText(value, {
+                    x,
+                    y: adjustedY,
+                    size: fontSize,
+                    font,
+                    color: rgb(0, 0, 0),
+                  });
+                }*/
+                if (value && (fontSize >= 12)) {
+                  page.drawText(value, {
+                    x,
+                    y: adjustedY,
+                    size: fontSize,
+                    font,
+                    color: rgb(0, 0, 0),
+                  });
+                }
+                if(value && (fontSize < 12))
+                {
+                  page.drawText(value, {
+                    x,
+                    y: adjustedY,
+                    size: fontSize,
+                    font,
+                    color: rgb(0, 0, 0),
+                  });
+                }
+                if(firstHalf && secondHalf) //Separating a too long string into newline
+                {
+                  console.log("IN THE SPLITTED");
+                  page.drawText(firstHalf.toString(), {
+                    x,
+                    y: adjustedY,
+                    size: fontSize,
+                    font,
+                    color: rgb(0, 0, 0),
+                  });
+                  page.drawText(secondHalf.toString(), {
+                    x,
+                    y: adjustedY + 10,
+                    size: fontSize,
+                    font,
+                    color: rgb(0, 0, 0),
+                  });
+                }
+              }
+            
+              
 
             });
 
+              resolve("Success");
 
-           
-          function getYOffset(index) {
+           }catch(error){
 
-              if (index <= 8){
+              reject(error);
 
-                return 0;
+           }
+          });
+          
+          p.then(async () => {
 
-              }
-              if (index <= 14){
+            const modifiedPdfBytes = await pdfDoc.save();
+            fs.writeFileSync(outputPath, modifiedPdfBytes);
 
-                return (index - 8) * 60;
+          }).catch((error) => {
 
-              }
-
-              return (index - 14) * 100;
-            }
-
-          function checkLength(valuesLength, value){
-
-            if (valuesLength > 15){
-
-              fontSize = 8;
-            
-            }
-            else if(valuesLength > 20)
-            {
-                fontSize = 8;
-                let midpoint = Math.ceil(value.length / 2);
-                let firstHalf = value.slice(0, midpoint);
-                let secondHalf = value.slice(midpoint);
-                return firstHalf, secondHalf;
-            }
-            else{
-              fontSize = 12;
-            }
-
-          }
-          function draw(yOffset, x, y, value, newLine, valuesSender, firstHalf, secondHalf) {
-              
-              adjustedY = y - yOffset;
-
-
-
-              if (value && (fontSize >= 12)) {
-                page.drawText(value.toString(), {
-                  x,
-                  y: adjustedY,
-                  size: fontSize,
-                  font,
-                  color: rgb(0, 0, 0),
-                });
-              }
-              else if(value && (fontSize < 12))
-              {
-                page.drawText(value.toString(), {
-                  x,
-                  y: adjustedY,
-                  size: fontSize,
-                  font,
-                  color: rgb(0, 0, 0),
-                });
-              }
-              else if(firstHalf && secondHalf) //Separating a too long string into newline
-              {
-                page.drawText(firstHalf.toString(), {
-                  x,
-                  y: adjustedY,
-                  size: fontSize,
-                  font,
-                  color: rgb(0, 0, 0),
-                });
-                page.drawText(secondHalf.toString(), {
-                  x,
-                  y: adjustedY + 10,
-                  size: fontSize,
-                  font,
-                  color: rgb(0, 0, 0),
-                });
-              }
-             }
-            }
+            console.error(error);
 
           });
           
-  
-        const modifiedPdfBytes = await pdfDoc.save();
-        
-        fs.writeFileSync(outputPath, modifiedPdfBytes);
+          return { success: true};
 
-  
-        return { success: true};
+        } catch (error) {
 
-      } catch (error) {
-        console.error('Error modifying PDF:', error);
-        return { success: false, error: error.message };
-      }
+          console.error('Error modifying PDF:', error);
+
+          return { 
+            success: false, 
+            error: error.message 
+          };
+        }
 
   });
 
