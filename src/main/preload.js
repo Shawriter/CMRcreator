@@ -6,14 +6,11 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
   modifyPDF: (data) => ipcRenderer.invoke('modify-pdf', data ), 
-  readFile: (path) => fs.readFileSync(path, 'utf8'),
-  writeFile: (path, data) => fs.writeFileSync(path, data),
+  //readFile: (path) => fs.readFileSync(path, 'utf8'),
+  //writeFile: (path, data) => fs.writeFileSync(path, data),
   getNamesAddresses: () => ipcRenderer.invoke('get-names-addresses'),
   getPDFDataModel: async () => {
     const PDFDataMod = await ipcRenderer.invoke('get-pdf-data-model');
-    /*const jsonDataMod = Buffer.from(PDFDataMod, 'base64').toString('utf-8'); 
-    const data = JSON.parse(jsonDataMod); 
-    console.log(jsonDataMod, "in preload.js");*/
     return PDFDataMod; 
   },
   createBuffer: (data, encoding) => {

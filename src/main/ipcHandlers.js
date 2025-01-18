@@ -47,7 +47,12 @@ function setupIPCHandlers() {
           const page = pdfDoc.getPages()[0];
           const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
           let fontSize = 12;
-          
+
+         /*page.forEach((page, index) => {
+            const { width, height } = page.getSize();
+            console.log(`Page ${index + 1} dimensions: Width = ${width}, Height = ${height}`);
+          });*/
+
           let adjustedY;
           let firstHalf = '';
           let secondHalf = '';
@@ -56,6 +61,8 @@ function setupIPCHandlers() {
             
             try{
 
+            var yOffset = 0;
+
             text.forEach((formData) => {
               formData.forEach(([key, value], index) => {
                 
@@ -63,245 +70,56 @@ function setupIPCHandlers() {
                   console.warn(`No coordinates defined for key: ${key}`);
                   return;
                 }
-                let yOffset = 0;
+                
                 let valuesLength = value.length;
                 let valuesDelegator;
 
                 const { x, y } = keyCoordinates[key];
-
-                  //Writing the addresses to the PDF, this might not be the best solution as I could have passed the types to the constructor when modeling the constructrors and getting the inputs, but it works
-                  switch(index){
-                    
-                    //For cases up to 8 the sender address let Y coordinates be default
-                    case 0:
-                      
-                      valuesDelegator = key + "Sender";
-                      forwarder(index, valuesLength, value);
-                      
-                      console.log(valuesDelegator);
-                      break;
-
-                    case 1:
-
-                      valuesDelegator = key + "Sender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 2:
-
-                      valuesDelegator = key + "Sender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 3:
-                        
-                      valuesDelegator = key + "Sender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 4:
-
-                      valuesDelegator = key + "Sender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 5: //The sender reference
-                      
-                      valuesDelegator = key + "Sender";
-                      forwarder(index, valuesLength, value);
-                    
-                      break;
-
-                    case 6:
-                      
-                      valuesDelegator = key + "Sender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 7:
-
-                      valuesDelegator = key + "Sender";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 8:
-
-                      valuesDelegator = key + "Receiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 9:
-
-                      valuesDelegator = key + "Receiver";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 10:
-                      
-                      valuesDelegator = key + "Receiver";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 11:
-
-                      valuesDelegator = key + "Receiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 12:
-                      
-                      valuesDelegator = key + "Receiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 13:
-
-                      valuesDelegator = key + "Receiver";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 14:
-                      
-                      valuesDelegator = key + "Receiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 15:
-                      
-                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 16:
-                      
-                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 17:
-                      
-                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 18:
-                      
-                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
-                      forwarder(index, valuesLength, value);
-                       
-                      break;
-
-                    case 19:
-                      
-                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 20:
-                      
-                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 21:
-                      
-                      valuesDelegator = key + "CollectionAddressIfNotTheSameAsSender";
-                      forwarder(index, valuesLength, value);
-                      
-                      break;
-
-                    case 22:
-
-                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 23:
-                      
-                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 24:
-                      
-                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 25:
-                      
-                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 26:
-                      
-                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-
-                    case 27:
-                      
-                      valuesDelegator = key + "ReceiverAddressIfNotTheSameAsReceiver";
-                      forwarder(index, valuesLength, value);
-
-                      break;
-                  }
                 
-                draw(yOffset, x, y, value, firstHalf, secondHalf, valuesLength);
+                yOffset = forwarder(index, valuesLength, value, x, y);
+
+                console.log(yOffset, "BEFORE");
+
+                draw(yOffset, x, y, value, firstHalf, secondHalf, valuesLength, valuesDelegator);
 
               });
 
 
-            function forwarder(index, valuesLength, value){
+            function forwarder(index, valuesLength, value, x, y, yOffset){
                 
               checkLength(valuesLength, value);
                       
-              yOffset = getYOffset(index); 
-            
+              yOffset = getYOffset(index, x, y); 
+              //console.log(yOffset, "IN FORWARDER");
+              return yOffset;
             }
 
-            function getYOffset(index) {
+            function getYOffset(index, x, y) {
+                
+                //console.log(width, height);
 
-                if (index <= 8){
+                getYOffset.offsetCounter = getYOffset.offsetCounter || 0;
 
+                console.log("OffsetCounter", getYOffset.offsetCounter);
+              
+                if (index <= 6) {
                   return 0;
+                }
+              
+                if (index > 6) {
+
+                  getYOffset.offsetCounter -= 20;
+                  y = y - (getYOffset.offsetCounter + 400);
+                  return y;
 
                 }
-                if (index <= 14){
-
-                  return (index - 8) * 60;
-
-                }
-
-                return (index - 14) * 100;
+                //console.log("INDEX IF 3");
+                //return 0;
+                //return (index - 14) * 100;
               }
 
             function checkLength(valuesLength, value, firstHalf, secondHalf){
-
+              //console.log(value, valuesLength);
               if (valuesLength > 15){
 
                 fontSize = 8;
@@ -321,30 +139,12 @@ function setupIPCHandlers() {
               }
 
             }
-            function draw(yOffset, x, y, value, firstHalf, secondHalf, valuesLength) {
+            function draw(yOffset, x, y, value, firstHalf, secondHalf, valuesLength, valuesDelegator) {
                 
                 adjustedY = y - yOffset;
+                console.log(adjustedY, yOffset, value);
 
-                /*if (value && (fontSize >= 12) && (valuesLength > 20)) {
-                  page.drawText(value, {
-                    x,
-                    y: adjustedY,
-                    size: fontSize,
-                    font,
-                    color: rgb(0, 0, 0),
-                  });
-                }*/
-                if (value && (fontSize >= 12)) {
-                  page.drawText(value, {
-                    x,
-                    y: adjustedY,
-                    size: fontSize,
-                    font,
-                    color: rgb(0, 0, 0),
-                  });
-                }
-                if(value && (fontSize < 12))
-                {
+                if (value) {
                   page.drawText(value, {
                     x,
                     y: adjustedY,
@@ -371,6 +171,38 @@ function setupIPCHandlers() {
                     color: rgb(0, 0, 0),
                   });
                 }
+                /*if (value && (fontSize >= 12) && (valuesLength > 20)) {
+                  page.drawText(value, {
+                    x,
+                    y: adjustedY,
+                    size: fontSize,
+                    font,
+                    color: rgb(0, 0, 0),
+                  });
+                }*/
+                
+                /*if(valuesDelegator == "fnameSender")
+                {
+                  console.log(valuesDelegator);
+                  page.drawText(value, {
+                    x,
+                    y: adjustedY+100,
+                    size: fontSize,
+                    font,
+                    color: rgb(0, 0, 0),
+                  });
+                }
+                if(value && (fontSize <= 12))
+                {
+                  page.drawText(value, {
+                    x,
+                    y: adjustedY,
+                    size: fontSize,
+                    font,
+                    color: rgb(0, 0, 0),
+                  });
+                }*/
+                
               }
             
               
